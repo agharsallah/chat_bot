@@ -7,9 +7,13 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const moment = require('moment');
 const util = require('util');
+const _ = require('lodash');
 
 const {generateMessage} = require('./utils/message');
 const {Users} = require('./users');
+
+const general_arr = require("./utils/message_src/greeting")
+
 var users = new Users();
 
 /* App setup */
@@ -66,7 +70,7 @@ io.on('connection', (socket) => {
        generateMessage("Admin", "Welcome to our chat!!"));*/
     
     /* Once user connected - send him a current userlist. */
-    socket.emit('server:updateUserList',
+    socket.emit('server:udateUserList',
 		users.getAllUsers());
 
 
@@ -96,49 +100,41 @@ io.on('connection', (socket) => {
 	   and sending them the new user list. */
 	io.to(params.channel).emit('server:updateUserList',
 				   users.getUserList(params.channel));
-	/* Emit event to everybody: */
-	/* io.emit('server:updateUserList', users.getUserList(params.room));*/
-
-	/* Broadcast a message to everybody
-	   except for except for the user on this socket. */
-	socket.broadcast.to(params.channel)
-	      .emit('server:newMessage',
-		    generateMessage("Admin",
-				    `${params.username} has joined this channel!`));
-
-	
+	/*add a hello message*/
+		socket.emit('server:first_hello',generateMessage("Admin",`Welcome ${params.username} I'm Your Election assistant`));
 	callback();
     });
 
     /* listening to the event. Receivemessages from user. */
-    /* once client sends me a message, I save it. */
     socket.on('client:createMessage', (message, callback) => {
 
 	/* Creating message */
 	var message = new Message({
 	    author: message.from,
 	    body: message.body,
-	    channel: message.channel,   
 	    createdAt: moment().valueOf()	    
 	});
-
-	console.log('Create message: ', message);
+	//print the user's message
+	socket.emit('server:newMessage', message);
+	/*Check if the users question matches a predefined Q*/
+	var grtng= general_arr.greeting.indexOf(message.body)
+	var grtng_resp = general_arr.greeting_response
+	if(grtng!=-1){
+	var rand_reply = grtng_resp[Math.floor(Math.random()*grtng_resp.length)];
 	
-	/* Saving message */
-	message.save().then((message)=>{
-	    /* console.log('Message saved', message);*/
-	    /* Sending back acknowledgement. */
-	    /* callback('Server has received the message:', message);*/
-	}, (err) => {
-	    console.log('Error saving the message', e);
-	});
+	setTimeout(()=>{
+		socket.emit('server:newMessage', generateMessage("Admin",rand_reply));
+	}, 400);
+	}else if(message.body.toLowerCase().indexOf("info") >= 0) {
+		setTimeout(()=>{
+			socket.emit('server:newMessage', generateMessage("Admin","ok great in which municipality do u leave ?"));
+		}, 400);
+	}else{
+		setTimeout(()=>{
+		socket.emit('server:newMessage', generateMessage("Admin","Sorry I didn't get what you get You can type help"));
+		}, 400);
+	}
 
-	/* Send out the received message to all the users. */
-	/* socket.emit emits a message to only one connection */
-	/* io.emit emits message to all the connections */
-	console.log('Emitting message to channel', message.channel)
-	io.to(message.channel).emit('server:newMessage', message);
-	console.log('Message emitted to channel: ', message);	
 	
 	
     });

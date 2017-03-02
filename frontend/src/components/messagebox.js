@@ -47,7 +47,7 @@ export default class MessageBox extends Component {
 		<div className="footer">
 		    <form onSubmit={this.join.bind(this)} id="message-form">
 			<textarea name="message" type="text"
-				  placeholder="username" autofocus
+				  placeholder="please enter username" autofocus
 				  ref="username"></textarea>
 			<button className="button">Join</button>
 		    </form>

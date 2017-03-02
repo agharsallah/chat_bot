@@ -18,10 +18,7 @@ import MessageBox from './messagebox';
 /* to emit and receive events */
 import io from 'socket.io-client';
 
-
-    var socket = io(`http://localhost:3000`);
-
-
+var socket = io(`http://localhost:3000`);
 
 export default class App extends Component {
     constructor(props) {
@@ -44,9 +41,16 @@ export default class App extends Component {
 
 	this.setUsername = this.setUsername.bind(this);
 	this.joinChannel = this.joinChannel.bind(this);	
+	this.generateMessage = this.generateMessage.bind(this);	
     }
-
-
+    
+	generateMessage(author, body){
+	    return {
+		author,
+		body,
+		createdAt: moment().valueOf()
+	    }
+	}
     setUsername(username){
 	/* temporarily set state here to pass username conveniently to the server */
 	/* getting username from get url and adding it to the state before I emit
@@ -62,15 +66,15 @@ export default class App extends Component {
 
     }
 
-
-    
-    
     componentDidMount() {
 	socket.on('connect', () => {
-	    /* console.log(">>>> src/components/chat.js:");
-	       console.log('Connected to server');*/
+			
+		console.log(this.props.params.channel)
+		
+
 	    /* Taking channel from the url parsed by router */
-	    this.joinChannel(this.props.params.channel);
+	    this.setState({messages:this.state.messages.concat([this.generateMessage("Admin","Please Type your Username")])});
+		this.renderMessages()
 	});
 
 
@@ -91,11 +95,18 @@ export default class App extends Component {
 	    this.scrollToBottom();
 	})
 
+	/*Bot posts the first message*/
+	socket.on(`server:first_hello`, data => {
+	    /* Add new message to the state */
+	    this.setState({
+		messages: this.state.messages.concat([data])
+	    });
+	    this.scrollToBottom();
+	})
 	/* Update user list */
 	socket.on('server:updateUserList', (users) => {
 	    /* console.log('users list:', users);*/
 	    this.setState({users});
-	    
 	});
     }
 
@@ -132,10 +143,11 @@ export default class App extends Component {
 	   console.log('Taking messages from the state and rendering them');*/
 	if (!messages) {
 	    return (
-		<div>No messages.</div>
+		<p>No messages.</p>
 	    );
 	};
 	return messages.map((message) => {
+		console.log(message)
 	    var formattedDate = moment(message.createdAt).fromNow();
 	    /* .format('YYYY-MM-DD')*/
 	    return (
@@ -157,10 +169,7 @@ export default class App extends Component {
 
 	return (
 	    <div className="mainWrapper">
-		<Sidebar username={this.state.username}
-			 users={this.state.users}
-			 channels={this.state.channels}
-			 joinChannel={this.joinChannel}/>
+
 		<div className="chat">
 		    <Header channel={this.props.params.channel} />
 		    <div className="messages" ref="messages">
