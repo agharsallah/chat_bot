@@ -1,26 +1,54 @@
-module.exports = {
-  entry: [
-    './src/index.js'
-  ],
+var webpack = require('webpack');
+
+/*
+ * Default webpack configuration for development
+ */
+var config = {
+  devtool: 'eval-source-map',
+  entry:  __dirname + "/src/index.js",
   output: {
-    path: __dirname,
-    publicPath: '/',
-    filename: 'bundle.js'
+    path: __dirname + "/public",
+    filename: "bundle.js"
   },
   module: {
-    loaders: [{
+    loaders: [    {
+            test: /\.scss$/,
+            loaders: [
+              'style-loader',
+              'css-loader',
+              'sass-loader'
+            ]
+          },
+          {
+      test: /\.jsx?$/,
       exclude: /node_modules/,
       loader: 'babel',
       query: {
-        presets: ['react', 'es2015', 'stage-1']
+        presets: ['es2015','react']
       }
-    }]
-  },
-  resolve: {
-    extensions: ['', '.js', '.jsx']
+    }
+]
   },
   devServer: {
+    contentBase: "./public",
+    colors: true,
     historyApiFallback: true,
-    contentBase: './'
-  }
+    inline: true
+  },
+}
+
+/*
+ * If bundling for production, optimize output
+ */
+if (process.env.NODE_ENV === 'production') {
+  config.devtool = false;
+  config.plugins = [
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.UglifyJsPlugin({comments: false}),
+    new webpack.DefinePlugin({
+      'process.env': {NODE_ENV: JSON.stringify('production')}
+    })
+  ];
 };
+
+module.exports = config;
