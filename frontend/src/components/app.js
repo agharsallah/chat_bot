@@ -68,16 +68,13 @@ export default class App extends Component {
 
     componentDidMount() {
 	socket.on('connect', () => {
-			
-		console.log(this.props.params.channel)
-		
-
+				
 	    /* Taking channel from the url parsed by router */
 	    this.setState({messages:this.state.messages.concat([this.generateMessage("Admin","Please Type your Username")])});
 		this.renderMessages()
 	});
 
-
+	socket.on('test',data=>{console.log(data)})
 	
 	socket.on('disconnect', () => {
 	    /* console.log(">>>> src/components/chat.js:");
@@ -108,6 +105,10 @@ export default class App extends Component {
 	    /* console.log('users list:', users);*/
 	    this.setState({users});
 	});
+	fetch(`http://localhost:3000/api/cc`) 
+            .then(result=> {
+               return result.json()
+            }).then(json=>{console.log('parsed json', json)})
     }
 
     joinChannel(channel) {
