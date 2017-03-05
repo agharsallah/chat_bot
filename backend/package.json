@@ -15,7 +15,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "artyom.js": "^1.0.5",
     "body-parser": "^1.15.2",
     "cors": "^2.8.1",
     "express": "^4.14.0",
@@ -24,7 +23,6 @@
     "mongoose": "^4.7.5",
     "morgan": "^1.7.0",
     "natural": "^0.5.0",
-    "say": "^0.11.0",
     "socket.io": "^1.7.2"
   },
   "devDependencies": {
