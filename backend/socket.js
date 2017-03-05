@@ -8,7 +8,7 @@ var users = new Users();
 const moment = require('moment');
 const util = require('util');
 var natural = require('natural');
-
+var simple_msg = require('./SocketEventHandlers/client_simple_msg')
 module.exports = function(io,Message){
 
 io.on('connection', (socket) => {
@@ -45,56 +45,9 @@ io.on('connection', (socket) => {
     
         /* listening to the event. Receivemessages from user. */
     socket.on('client:createMessage', (message, callback) => {
-
-	/* Creating message */
-	var message = new Message({
-	    author: message.from,
-	    body: message.body,
-	    createdAt: moment().valueOf()	    
-	});
-	//print the user's message
-	socket.emit('server:newMessage', message);
-	/*Check if the users question matches a predefined Q*/
-	var grtng= general_arr.greeting.indexOf(message.body);
-	var grtng_resp = general_arr.greeting_response;
-	var verif = []
-	//_.findIndex(all_mun.features) 
-		all_mun.features.forEach( function (arrayItem)
-		{
-			var city_name = arrayItem.properties.name_en;
-			var city_pop = arrayItem.properties.citizens;
-			var city_area = arrayItem.properties.area;
-			var city_seats = arrayItem.properties.seats;
-			var closness = natural.JaroWinklerDistance(city_name,message.body)
-		    
-		    if (closness > 0.95) {
-					socket.emit('server:newMessage', generateMessage("Admin",`in ${city_name} Lives arround ${city_pop} people`));
-					console.log(arrayItem.properties.citizens)
-					
-		    }else{
-		    	mun_exist =0;
-		    }
-		});
-		
-	if(grtng!=-1){
-		var rand_reply = grtng_resp[Math.floor(Math.random()*grtng_resp.length)];
-		setTimeout(()=>{
-			socket.emit('server:newMessage', generateMessage("Admin",rand_reply));
-		}, 400);
-		
-	}else if(message.body.toLowerCase().indexOf("info") >= 0) {
-		setTimeout(()=>{
-			socket.emit('server:newMessage', generateMessage("Admin","ok great in which municipality do u leave ?"));
-		}, 400);
-	
-	}else{
-		setTimeout(()=>{
-		socket.emit('server:newMessage', generateMessage("Admin","Sorry I didn't get what you get You can type help"));
-		}, 400);
-	}
-
-	
-	
+    	//send the socket/ message I got from socket,and the Message model from db
+    	var simple = simple_msg(socket,message,Message)
+    	simple.emit();
     });
     /* Disconnect */
     socket.on('disconnect', () => {
