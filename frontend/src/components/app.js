@@ -171,8 +171,35 @@ export default class App extends Component {
 	return (
 	    <div className="mainWrapper">
 
+
+		<div className="avenue-messenger">
+				<Header/>
+				<div className="chat">
+					<div className="chat-title">
+						<h1>Admin</h1>
+						<h2>RE/MAX</h2>
+					</div>
+<div className="messages">
+    <div className="messages-content mCustomScrollbar _mCS_1 mCS_no_scrollbar">
+		<div id="mCSB_1" className="mCustomScrollBox mCS-light mCSB_vertical mCSB_inside" >
+			<div id="mCSB_1_container" className="mCSB_container mCS_y_hidden mCS_no_scrollbar_y" style={{position:"relative", top:"0", left:"0"}} dir="ltr">
+				<div className="message new">
+					<figure className="avatar">
+						<img src="http://askavenue.com/img/17.jpg"/>
+					</figure>
+					Hi there, I'm Jesse and you?
+					<div className="timestamp">23:35</div>
+					<div className="checkmark-sent-delivered">✓</div>
+					<div className="checkmark-read">✓</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  </div>
+				</div>
+		</div>
+
 		<div className="chat">
-		    <Header channel={this.props.params.channel} />
 		    <div className="messages" ref="messages">
 			{ this.renderMessages() }
 		    </div>		    

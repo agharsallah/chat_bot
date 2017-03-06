@@ -8,11 +8,10 @@ import { IndexLinkContainer, LinkContainer } from 'react-router-bootstrap';
 export default class Header extends Component {
     render() {
 	return (
-	    <div className="header">
-		<Link to="/">
-		    #{this.props.channel}
-		</Link>
-	    </div>
+			<div className="agent-face">
+				<div className="half">
+				<img className="agent circle" src="http://askavenue.com/img/17.jpg" /></div>
+			</div>
 	);
     }
 }
