@@ -1,13 +1,7 @@
 const {generateMessage} = require('./utils/message');
 const {Users} = require('./users');
-
-const general_arr = require("./utils/message_src/greeting")
-const all_mun = require("./utils/message_src/all_mun")
-
 var users = new Users();
-const moment = require('moment');
 const util = require('util');
-var natural = require('natural');
 var simple_msg = require('./SocketEventHandlers/client_simple_msg')
 module.exports = function(io,Message){
 

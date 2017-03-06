@@ -6,6 +6,7 @@ const all_mun = require("./../utils/message_src/all_mun")
 const {generateMessage} = require('./../utils/message');
 const moment = require('moment');
 var natural = require('natural');
+var artyom = require('artyom.js');
 
 module.exports = (socket,message,Message)=>{
     /* Creating message */
@@ -23,7 +24,7 @@ module.exports = (socket,message,Message)=>{
     //print the user's message
     emit:()=>{
         socket.emit('server:newMessage', message);
-
+        var mun_exist = []
         all_mun.features.forEach( function (arrayItem)
         {
             var city_name = arrayItem.properties.name_en;
@@ -31,15 +32,16 @@ module.exports = (socket,message,Message)=>{
             var city_area = arrayItem.properties.area;
             var city_seats = arrayItem.properties.seats;
             var closness = natural.JaroWinklerDistance(city_name,message.body)
-            
+            var obj = {"name":city_name,"population":city_pop}
             if (closness > 0.95) {
-                    socket.emit('server:newMessage', generateMessage("Admin",`in ${city_name} Lives arround ${city_pop} people`));
-                    console.log(arrayItem.properties.citizens)
-                    
-            }else{
-                mun_exist =0;
+                pass(obj);
             }
         });
+        function pass(params) {
+            if (params) {
+                mun_exist.push(params)
+            }
+        }
         
     if(grtng!=-1){
         var rand_reply = grtng_resp[Math.floor(Math.random()*grtng_resp.length)];
@@ -52,6 +54,10 @@ module.exports = (socket,message,Message)=>{
             socket.emit('server:newMessage', generateMessage("Admin","ok great in which municipality do u leave ?"));
         }, 400);
     
+    }else if(mun_exist.length!=0){
+         socket.emit('server:newMessage', generateMessage("Admin",`in ${mun_exist[0].name} Lives arround ${mun_exist[0].population} people`));
+         artyom.say(`in ${mun_exist[0].name} Lives arround ${mun_exist[0].population} people`);
+
     }else{
         setTimeout(()=>{
         socket.emit('server:newMessage', generateMessage("Admin","Sorry I didn't get what you get You can type help"));
