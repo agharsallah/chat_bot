@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { browserHistory } from 'react-router';
-
 import moment from 'moment';
-
+import { ArtyomBuilder } from 'artyom.js';
+let artyom = ArtyomBuilder.getInstance();
 /* Bootstrap */
 import { Grid, Row, Col } from 'react-bootstrap';
 
@@ -73,8 +73,6 @@ export default class App extends Component {
 	    this.setState({messages:this.state.messages.concat([this.generateMessage("Admin","Please Type your Username")])});
 		this.renderMessages()
 	});
-
-	socket.on('test',data=>{console.log(data)})
 	
 	socket.on('disconnect', () => {
 	    /* console.log(">>>> src/components/chat.js:");
@@ -87,6 +85,9 @@ export default class App extends Component {
 	    this.setState({
 		messages: this.state.messages.concat([data])
 	    });
+		if (data.author == "Admin") {
+			artyom.say(data.body);
+		}
 	    console.log(">>>> src/components/chat.js:");
 	    console.log('Message received from server and added to state', data);
 	    this.scrollToBottom();
@@ -148,7 +149,6 @@ export default class App extends Component {
 	    );
 	};
 	return messages.map((message) => {
-		console.log(message)
 	    var formattedDate = moment(message.createdAt).fromNow();
 	    /* .format('YYYY-MM-DD')*/
 	    return (

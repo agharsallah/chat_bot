@@ -6,7 +6,6 @@ const all_mun = require("./../utils/message_src/all_mun")
 const {generateMessage} = require('./../utils/message');
 const moment = require('moment');
 var natural = require('natural');
-var artyom = require('artyom.js');
 
 module.exports = (socket,message,Message)=>{
     /* Creating message */
@@ -56,11 +55,9 @@ module.exports = (socket,message,Message)=>{
     
     }else if(mun_exist.length!=0){
          socket.emit('server:newMessage', generateMessage("Admin",`in ${mun_exist[0].name} Lives arround ${mun_exist[0].population} people`));
-         artyom.say(`in ${mun_exist[0].name} Lives arround ${mun_exist[0].population} people`);
-
     }else{
         setTimeout(()=>{
-        socket.emit('server:newMessage', generateMessage("Admin","Sorry I didn't get what you get You can type help"));
+        socket.emit('server:newMessage', generateMessage("Admin","Sorry I didn't get what you've typed, You can type help"));
         }, 400);
     }
 

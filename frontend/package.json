@@ -30,6 +30,7 @@
     "react-tap-event-plugin": "^1.0.0"
   },
   "dependencies": {
+    "artyom.js": "^1.0.5",
     "axios": "^0.15.2",
     "babel-preset-stage-1": "^6.1.18",
     "lodash": "^3.10.1",
