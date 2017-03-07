@@ -33,25 +33,23 @@ export default class MessageBox extends Component {
     render() {
 	if (this.props.username) {
 	    return (
-		<div className="footer">
-		    <form onSubmit={this.sendMessage.bind(this)} id="message-form">
-			<textarea name="message" type="text"
-				  placeholder="Message" autofocus
-				  ref="message"></textarea>
-			<button className="button">Post</button>
-		    </form>
-		</div>
+			<div className="message-box">
+				<form onSubmit={this.sendMessage.bind(this)} >
+					<textarea type="text"  ref="message"
+						className="message-input" placeholder="Type message..."></textarea>
+					<button type="submit" className="message-submit">Send</button>
+				</form>
+			</div>
 	    );
 	} else {
 	    return (
-		<div className="footer">
-		    <form onSubmit={this.join.bind(this)} id="message-form">
-			<textarea name="message" type="text"
-				  placeholder="please enter username" autofocus
-				  ref="username"></textarea>
-			<button className="button">Join</button>
-		    </form>
-		</div>
+			<div className="message-box">
+				<form onSubmit={this.join.bind(this)} >
+					<textarea type="text" ref="username" 
+						className="message-input" placeholder="Type message..."></textarea>
+					<button type="submit" className="message-submit">Send</button>
+				</form>
+			</div>
 	    );	    
 	}
     }

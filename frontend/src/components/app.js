@@ -151,14 +151,27 @@ export default class App extends Component {
 	return messages.map((message) => {
 	    var formattedDate = moment(message.createdAt).fromNow();
 	    /* .format('YYYY-MM-DD')*/
-	    return (
-		<div key={message.createdAt}>
-		    <span className="right">{formattedDate}</span>		    
-		    <b> {message.author} </b> <br/>
-		    {message.body}
-		    <hr/>
-		</div>
-	    )
+	    if (message.author =="Admin") {
+			return (
+				<div className="message new" key={message.createdAt}>
+					<figure className="avatar">
+						<img src="http://askavenue.com/img/17.jpg"/>
+					</figure>
+					{message.body}
+					<div className="timestamp">{formattedDate}</div>
+					<div className="checkmark-sent-delivered">✓</div>
+					<div className="checkmark-read">✓</div>
+				</div>
+			)
+		}else{
+			return(
+				<div className="message message-personal new">{message.body}
+					<div className="checkmark-sent-delivered">✓</div>
+					<div className="checkmark-read">✓</div>
+				</div>
+			)
+}
+
 	});
     }
     
@@ -179,35 +192,25 @@ export default class App extends Component {
 						<h1>Admin</h1>
 						<h2>RE/MAX</h2>
 					</div>
-<div className="messages">
-    <div className="messages-content mCustomScrollbar _mCS_1 mCS_no_scrollbar">
-		<div id="mCSB_1" className="mCustomScrollBox mCS-light mCSB_vertical mCSB_inside" >
-			<div id="mCSB_1_container" className="mCSB_container mCS_y_hidden mCS_no_scrollbar_y" style={{position:"relative", top:"0", left:"0"}} dir="ltr">
-				<div className="message new">
-					<figure className="avatar">
-						<img src="http://askavenue.com/img/17.jpg"/>
-					</figure>
-					Hi there, I'm Jesse and you?
-					<div className="timestamp">23:35</div>
-					<div className="checkmark-sent-delivered">✓</div>
-					<div className="checkmark-read">✓</div>
-				</div>
-			</div>
-		</div>
-	</div>
-  </div>
+					<div className="messages" ref="messages">
+					<div className="messages-content mCustomScrollbar _mCS_1">
+					<div id="mCSB_1" className="mCustomScrollBox mCS-light mCSB_vertical mCSB_inside" style={{maxHeight: "none"}} >
+					<div id="mCSB_1_container" className="mCSB_container" style={{position: "relative", top: "0px", left: "0px"}} >
+						{ this.renderMessages() }
+						<div className="message loading new"><figure className="avatar"><img src="http://askavenue.com/img/17.jpg"/></figure><span></span></div>
+					</div>
+					</div>
+					</div>
+					</div>
+
+					   <MessageBox socket = { socket }
+							username={this.state.username}
+							setUsername = {this.setUsername}
+							channel={this.props.params.channel}/>
 				</div>
 		</div>
 
-		<div className="chat">
-		    <div className="messages" ref="messages">
-			{ this.renderMessages() }
-		    </div>		    
-		    <MessageBox socket = { socket }
-				username={this.state.username}
-				setUsername = {this.setUsername}
-				channel={this.props.params.channel}/>
-		</div>	    
+  
 	    </div>
 	);
     }
