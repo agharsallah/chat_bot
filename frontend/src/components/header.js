@@ -10,7 +10,7 @@ export default class Header extends Component {
 	return (
 			<div className="agent-face">
 				<div className="half">
-				<img className="agent circle" src="http://askavenue.com/img/17.jpg" /></div>
+				<img className="agent circle" src="./img/bot.png" /></div>
 			</div>
 	);
     }

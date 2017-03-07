@@ -149,16 +149,16 @@ export default class App extends Component {
 	    );
 	};
 	return messages.map((message) => {
-	    var formattedDate = moment(message.createdAt).fromNow();
-	    /* .format('YYYY-MM-DD')*/
+	    //var formattedDate = moment(message.createdAt).fromNow();
+		var time =  moment(message.createdAt).format('h:mm');
 	    if (message.author =="Admin") {
 			return (
 				<div className="message new" key={message.createdAt}>
 					<figure className="avatar">
-						<img src="http://askavenue.com/img/17.jpg"/>
+						<img src="./img/bot.png"/>
 					</figure>
 					{message.body}
-					<div className="timestamp">{formattedDate}</div>
+					<div className="timestamp">{time}</div>
 					<div className="checkmark-sent-delivered">✓</div>
 					<div className="checkmark-read">✓</div>
 				</div>
@@ -193,16 +193,10 @@ export default class App extends Component {
 						<h2>RE/MAX</h2>
 					</div>
 					<div className="messages" ref="messages">
-					<div className="messages-content mCustomScrollbar _mCS_1">
-					<div id="mCSB_1" className="mCustomScrollBox mCS-light mCSB_vertical mCSB_inside" style={{maxHeight: "none"}} >
-					<div id="mCSB_1_container" className="mCSB_container" style={{position: "relative", top: "0px", left: "0px"}} >
 						{ this.renderMessages() }
-						<div className="message loading new"><figure className="avatar"><img src="http://askavenue.com/img/17.jpg"/></figure><span></span></div>
+						<div className="message loading new"><figure className="avatar"><img src="./img/bot.png"/></figure><span></span></div>
+								
 					</div>
-					</div>
-					</div>
-					</div>
-
 					   <MessageBox socket = { socket }
 							username={this.state.username}
 							setUsername = {this.setUsername}
