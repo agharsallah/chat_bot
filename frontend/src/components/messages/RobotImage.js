@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 const RobotImage = (props)=>{
     const message = props.message
+    const time = props.time
     return(
         <div className="message new" key={message.createdAt}>
             <figure className="avatar">
