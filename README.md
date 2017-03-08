@@ -2,17 +2,17 @@
 
 This is a simple chat application built with Node, Mongo, Express, React and socket.io. inorder to give info to electors.
 
-![](https://raw.githubusercontent.com/x-hunter/chat/master/assets/screenshot.png)
+![](https://raw.githubusercontent.com/x-hunter/chat_bot/master/assets/screenshot.png)
 
 # Run the code
 git clone
 
-Run mongo db
+Run mongo db<br />
 
-cd backend
-npm install
-npm start
-
-cd frontend
-npm install
+cd backend<br />
+npm install<br />
+npm start<br />
+------------<br />
+cd frontend<br />
+npm install<br />
 npm start
