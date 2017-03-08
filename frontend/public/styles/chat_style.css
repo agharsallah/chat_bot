@@ -203,6 +203,7 @@ Messages
 }
 .messages .message.message-personal {
   float: right;
+  right:8px;
   text-align: right;
   /*      background: linear-gradient(120deg, #ddd, #eee);*/
   background: #fff;

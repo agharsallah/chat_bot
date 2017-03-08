@@ -27,21 +27,14 @@ export default class App extends Component {
 	    username: "",
 	    channel: "",
 	    users: [],
-	    messages:[],	    
-	    channels:["General",
-		      "Strtups",
-		      "Wwwdev",
-		      "Rationality",
-		      "AskHC",
-		      "ShowHC",
-		      "Science",
-		      "Design",
-		      "Marketing"]	    
+	    messages:[],
+		showencours:false	        
 	};
 
 	this.setUsername = this.setUsername.bind(this);
 	this.joinChannel = this.joinChannel.bind(this);	
 	this.generateMessage = this.generateMessage.bind(this);	
+	this.handlencours = this.handlencours.bind(this);	
     }
     
 	generateMessage(author, body){
@@ -138,9 +131,20 @@ export default class App extends Component {
 	    messages.scrollTop = scrollHeight;
 	}
     };
-    
+    handlencours(a){
+		
+		this.setState({showencours:a});
+
+		setTimeout(function(){
+			this.setState({showencours:false});
+			console.log("in time")
+		}.bind(this), 1000);
+				console.log("out time")
+
+	}
     renderMessages() {
 	const messages = this.state.messages;
+
 	/* console.log(">>>> src/components/chat.js:");
 	   console.log('Taking messages from the state and rendering them');*/
 	if (!messages) {
@@ -152,6 +156,7 @@ export default class App extends Component {
 	    //var formattedDate = moment(message.createdAt).fromNow();
 		var time =  moment(message.createdAt).format('h:mm');
 	    if (message.author =="Admin") {
+
 			return (
 				<div className="message new" key={message.createdAt}>
 					<figure className="avatar">
@@ -170,7 +175,7 @@ export default class App extends Component {
 					<div className="checkmark-read">✓</div>
 				</div>
 			)
-}
+		}
 
 	});
     }
@@ -193,13 +198,15 @@ export default class App extends Component {
 					</div>
 					<div className="messages" ref="messages">
 						{ this.renderMessages() }
-						<div className="message loading new"><figure className="avatar"><img src="./img/bot.png"/></figure><span></span></div>
+						{ this.state.showencours ? <div className="message message-personal loading new"><figure className="avatar"></figure><span></span></div> : null }
 								
 					</div>
 					   <MessageBox socket = { socket }
 							username={this.state.username}
 							setUsername = {this.setUsername}
-							channel={this.props.params.channel}/>
+							channel={this.props.params.channel}
+							encours={this.handlencours}
+							/>
 				</div>
 		</div>
 

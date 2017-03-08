@@ -3,6 +3,11 @@ import ReactDOM from 'react-dom';
 import { browserHistory } from 'react-router';
 
 export default class MessageBox extends Component {
+	constructor(props) {
+	super(props);
+	this.state = {showencours:false};
+    }
+
     sendMessage(event) {
 	if(event.key == 'Enter'){
 	event.preventDefault();
@@ -16,8 +21,13 @@ export default class MessageBox extends Component {
 	}, (ackn) => {
 	    console.log(ackn);
 	});
-	this.refs.message.value="";	
-    }
+	this.refs.message.value="";
+
+    }else{
+
+		this.setState({showencours:true});	
+		this.props.encours(this.state.showencours)
+	}
 	}
 
     join(event) {
