@@ -189,8 +189,7 @@ export default class App extends Component {
 				<Header/>
 				<div className="chat">
 					<div className="chat-title">
-						<h1>Admin</h1>
-						<h2>RE/MAX</h2>
+						<h1>Democracy Bot</h1>
 					</div>
 					<div className="messages" ref="messages">
 						{ this.renderMessages() }

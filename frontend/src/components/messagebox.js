@@ -4,6 +4,7 @@ import { browserHistory } from 'react-router';
 
 export default class MessageBox extends Component {
     sendMessage(event) {
+	if(event.key == 'Enter'){
 	event.preventDefault();
 	/* Socket is passed here as props from chat.js */
 	const socket = this.props.socket;
@@ -17,7 +18,7 @@ export default class MessageBox extends Component {
 	});
 	this.refs.message.value="";	
     }
-
+	}
 
     join(event) {
 	event.preventDefault();
@@ -34,8 +35,8 @@ export default class MessageBox extends Component {
 	if (this.props.username) {
 	    return (
 			<div className="message-box">
-				<form onSubmit={this.sendMessage.bind(this)} >
-					<textarea type="text"  ref="message"
+				<form  >
+					<textarea type="text"  ref="message" onKeyPress={this.sendMessage.bind(this)}
 						className="message-input" placeholder="Type message..."></textarea>
 					<button type="submit" className="message-submit">Send</button>
 				</form>
