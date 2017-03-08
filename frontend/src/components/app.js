@@ -12,7 +12,9 @@ import Sidebar from './sidebar';
 import Header from './header';
 import Message from './message';
 import MessageBox from './messagebox';
-
+import RobotSimple from './messages/RobotSimple';
+import RobotImage from './messages/RobotImage';
+import UserSimple from './messages/UserSimple';
 /* Socket.io magic incatations. */
 /* These two lines automatically connect to the server, allowing me */
 /* to emit and receive events */
@@ -143,84 +145,52 @@ export default class App extends Component {
 		}.bind(this), 500);
 		console.log("out time")
 	}
-    renderMessages() {
-	const messages = this.state.messages;
-	/* console.log(">>>> src/components/chat.js:");
-	   console.log('Taking messages from the state and rendering them');*/
-	if (!messages) {
-	    return (
-		<p>No messages.</p>
-	    );
-	};
-	return messages.map((message) => {
-	    //var formattedDate = moment(message.createdAt).fromNow();
-		var time =  moment(message.createdAt).format('h:mm');
-	    if (message.author =="Admin") {
+	renderMessages(){
+		const messages=this.state.messages;
+		if (!messages) {
+            return (
+            <p>No messages.</p>
+            );
+        };
+		        return messages.map((message) => {
+                //var formattedDate = moment(message.createdAt).fromNow();
+                var time =  moment(message.createdAt).format('h:mm');
+                if (message.author =="Admin") {
+                       return <RobotSimple message={message} time={time}/>
+                
+				}else if (message.author =="img"){
+                       return <RobotImage message={message} time={time}/>
+                
+				} else{
+                       return <UserSimple message={message}/>  
 
-			return (
-				<div className="message new" key={message.createdAt}>
-					<figure className="avatar">
-						<img src="./img/bot.png"/>
-					</figure>
-					{message.body}
-					<div className="timestamp">{time}</div>
-					<div className="checkmark-sent-delivered">✓</div>
-					<div className="checkmark-read">✓</div>
-				</div>
-			)
-		}else if (message.author =="img"){
-				return (<div className="message new" key={message.createdAt}>
-					<figure className="avatar">
-						<img src="./img/bot.png"/>
-					</figure>
-					<img src="./img/vote.gif"/>
-					<div className="timestamp">{time}</div>
-					<div className="checkmark-sent-delivered">✓</div>
-					<div className="checkmark-read">✓</div>
-				</div>)
-		} else{
-			return(
-				<div className="message message-personal new">{message.body}
-					<div className="checkmark-sent-delivered">✓</div>
-					<div className="checkmark-read">✓</div>
-				</div>
-			)
-		}
+                }
 
-	});
-    }
-    
+            });
+	}
     
     render() {
-	/* router parses url for me, and I'm grabbing get parameters */
-	/* var username = this.props.location.query.username;*/
-	/* console.log(this.props.location);*/
-
 	return (
 	    <div className="mainWrapper">
-
-
-		<div className="avenue-messenger">
-				<Header/>
-				<div className="chat">
-					<div className="chat-title">
-						<h1>Democracy Bot</h1>
+			<div className="avenue-messenger">
+					<Header/>
+					<div className="chat">
+						<div className="chat-title">
+							<h1>Democracy Bot</h1>
+						</div>
+						<div className="messages" ref="messages">
+							{ this.renderMessages() }
+							{ this.state.showencours ? <div className="message message-personal loading new"><figure className="avatar"></figure><span></span></div> : null }
+									
+						</div>
+						<MessageBox socket = { socket }
+								username={this.state.username}
+								setUsername = {this.setUsername}
+								channel={this.props.params.channel}
+								encours={this.handlencours}
+								/>
 					</div>
-					<div className="messages" ref="messages">
-						{ this.renderMessages() }
-						{ this.state.showencours ? <div className="message message-personal loading new"><figure className="avatar"></figure><span></span></div> : null }
-								
-					</div>
-					   <MessageBox socket = { socket }
-							username={this.state.username}
-							setUsername = {this.setUsername}
-							channel={this.props.params.channel}
-							encours={this.handlencours}
-							/>
-				</div>
-		</div>
-
-  
+			</div>
 	    </div>
 	);
     }
