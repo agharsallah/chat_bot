@@ -122,29 +122,29 @@ export default class App extends Component {
     
     scrollToBottom() {
 	var messages = ReactDOM.findDOMNode(this.refs.messages);
+	messages.animate({behavior: "smooth !important"});
 	var clientHeight = messages.clientHeight;
 	var scrollTop = messages.scrollTop;
 	var scrollHeight = messages.scrollHeight;	
 	var messageHeight = 44;
-	if (clientHeight + scrollTop + messageHeight + messageHeight >= scrollHeight) {
+	//if (clientHeight + scrollTop + messageHeight + messageHeight >= scrollHeight) {
 	    console.log('should scroll');
-	    messages.scrollTop = scrollHeight;
-	}
+		console.log(scrollHeight)
+		console.log(clientHeight)
+	   messages.scrollTop = (messages.scrollHeight+150) - messages.clientHeight;
+	//}
     };
-    handlencours(a){
-		
+    //function thet goes to messagebox child and get bool if the user is typing or not
+	handlencours(a){
 		this.setState({showencours:a});
-
 		setTimeout(function(){
 			this.setState({showencours:false});
 			console.log("in time")
-		}.bind(this), 1000);
-				console.log("out time")
-
+		}.bind(this), 500);
+		console.log("out time")
 	}
     renderMessages() {
 	const messages = this.state.messages;
-
 	/* console.log(">>>> src/components/chat.js:");
 	   console.log('Taking messages from the state and rendering them');*/
 	if (!messages) {
@@ -168,7 +168,17 @@ export default class App extends Component {
 					<div className="checkmark-read">✓</div>
 				</div>
 			)
-		}else{
+		}else if (message.author =="img"){
+				return (<div className="message new" key={message.createdAt}>
+					<figure className="avatar">
+						<img src="./img/bot.png"/>
+					</figure>
+					<img src="./img/vote.gif"/>
+					<div className="timestamp">{time}</div>
+					<div className="checkmark-sent-delivered">✓</div>
+					<div className="checkmark-read">✓</div>
+				</div>)
+		} else{
 			return(
 				<div className="message message-personal new">{message.body}
 					<div className="checkmark-sent-delivered">✓</div>

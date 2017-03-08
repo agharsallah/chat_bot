@@ -55,6 +55,9 @@ module.exports = (socket,message,Message)=>{
     
     }else if(mun_exist.length!=0){
          socket.emit('server:newMessage', generateMessage("Admin",`in ${mun_exist[0].name} Lives arround ${mun_exist[0].population} people`));
+    }else if(message.body=="random"){
+         socket.emit('server:newMessage', generateMessage("img","election_gif"));
+         console.log(message.body)
     }else{
         setTimeout(()=>{
         socket.emit('server:newMessage', generateMessage("Admin","Sorry I didn't get what you've typed, You can type help"));
